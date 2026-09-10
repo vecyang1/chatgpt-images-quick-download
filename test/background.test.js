@@ -64,7 +64,7 @@ test("downloadAndWait rejects completed non-image downloads and removes the stra
         callback([
           {
             id: 42,
-            filename: "/Users/example/Downloads/svg.html",
+            filename: "/tmp/mock-downloads/svg.html",
             mime: "text/html",
             state: "complete"
           }
@@ -104,14 +104,14 @@ test("isImageDownload rejects html error pages even when the filename looks like
 
   assert.equal(
     context.isImageDownload({
-      filename: "/Users/example/Downloads/chatgpt-image.png",
+      filename: "/tmp/mock-downloads/chatgpt-image.png",
       mime: "text/html"
     }),
     false
   );
   assert.equal(
     context.isImageDownload({
-      filename: "/Users/example/Downloads/chatgpt-image.png",
+      filename: "/tmp/mock-downloads/chatgpt-image.png",
       mime: "application/octet-stream"
     }),
     true
