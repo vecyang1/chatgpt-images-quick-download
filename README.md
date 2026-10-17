@@ -6,7 +6,7 @@
 
 Small unpacked Chrome extension for ChatGPT Images and generated images inside normal ChatGPT chats.
 
-It adds a tiny transparent download icon on each generated image. Hover an image, click the icon, and the extension automatically uses ChatGPT's native full-size Save flow so you do not have to open each image and click inside it by hand.
+It adds a tiny transparent download icon and a batch-select checkbox on each generated image, plus a `Download all` button beside the `My images` heading. Hover an image, click the icon for one file, select several images, or let the gallery button scroll-load and download unique images together. The extension automatically uses ChatGPT's native full-size Save flow so you do not have to open each image and click inside it by hand.
 
 ## Why
 
@@ -15,6 +15,8 @@ ChatGPT shows generated images in both the Images gallery and normal chat thread
 ## UX
 
 - Per-image floating download button, top-right of each target image.
+- Per-image batch-select checkbox, top-left of each target image, with a floating `Download selected` toolbar that uses ChatGPT's native full-size viewer `Save` path.
+- `Download all` button beside `My images` on `https://chatgpt.com/images`; it scrolls the gallery to discover lazy-loaded images, deduplicates by stable download key, and only uses ChatGPT's native full-size viewer `Save` path.
 - Does not overlap ChatGPT's native bottom hover controls such as `Edit` and share/open.
 - Transparent by default, stronger on hover/focus, so the gallery stays clean.
 - Works on `https://chatgpt.com/images` and `https://chatgpt.com/c/...` conversation pages.
@@ -35,7 +37,7 @@ ChatGPT shows generated images in both the Images gallery and normal chat thread
 6. Click `Load unpacked`.
 7. Select the unzipped extension folder.
 8. Open `https://chatgpt.com/images` or a ChatGPT conversation with generated images.
-9. Hover an image and click the small download icon.
+9. Hover an image and click the small download icon, select several checkboxes and click `Download selected`, or use `Download all` beside `My images`.
 
 ### Developer install
 
@@ -60,8 +62,8 @@ Then use the same `chrome://extensions/` > `Load unpacked` flow and select the c
 ```text
 manifest.json          Chrome MV3 config
 background.js          Validates and saves fallback image URLs
-content.js             Adds image overlay buttons on ChatGPT Images and chats
-content.css            Transparent floating button and toast UI
+content.js             Adds image overlay buttons, selection controls, and batch download UI
+content.css            Transparent floating controls, batch toolbar, and toast UI
 popup.html/css/js      Small status and visible-download popup
 icons/                 Generated extension logo and Chrome icon sizes
 src/imageTargets.js    Tested URL, filename, and filtering helpers
@@ -90,6 +92,8 @@ npm run package
 
 - The extension content script is scoped to `chatgpt.com`, not all websites.
 - Direct URL fallback downloads are saved under `Downloads/ChatGPT Images/`; the primary native-save path keeps ChatGPT's normal filename and destination.
+- `Download all` only sees images ChatGPT can load into the current page. It auto-scrolls to ask the gallery for more items, then stops after the list stays stable.
+- Batch actions skip tiles when the full-size viewer control cannot be matched. They do not fall back to direct gallery URLs because those can be small thumbnail or preview assets.
 - Blob/data image URLs use an in-page fallback download because Chrome's background download API cannot always access page-owned blob URLs.
 - If ChatGPT changes the gallery markup, click the extension popup's `Rescan`; if the image still has a normal `<img>` element and is gallery-sized, it should be detected.
 

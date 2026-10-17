@@ -32,12 +32,22 @@ function buildVisualSmokeHtml(css) {
     <style>
       ${css}
       body {
-        align-items: center;
         background: #111;
-        display: flex;
-        height: 100vh;
-        justify-content: center;
+        display: grid;
+        min-height: 100vh;
+        place-items: start center;
         margin: 0;
+      }
+      .stage {
+        margin-top: 98px;
+        width: 520px;
+      }
+      .library-title {
+        align-items: center;
+        color: #fff;
+        display: flex;
+        font: 650 28px/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0 0 18px;
       }
       .tile {
         border-radius: 4px;
@@ -84,34 +94,75 @@ function buildVisualSmokeHtml(css) {
     </style>
   </head>
   <body>
-    <div class="tile cgqid-host" id="tile">
-      <div class="photo"></div>
-      <button class="cgqid-button" id="download" type="button" aria-label="Download this image">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5 19h14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="native-edit" id="edit">Edit</div>
-      <div class="native-share" id="share">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 15V4m0 0 4 4m-4-4L8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+    <div class="stage">
+      <h2 class="library-title">My images
+        <button class="cgqid-library-download-all" id="downloadAll" type="button">
+          <span>Download all</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
+            <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 19h14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="tile cgqid-host" id="tile">
+        <div class="photo"></div>
+        <button class="cgqid-select" id="select" type="button" role="checkbox" aria-checked="true" aria-label="Select this image for batch download">
+          <span class="cgqid-select-box" aria-hidden="true"></span>
+        </button>
+        <button class="cgqid-button" id="download" type="button" aria-label="Download this image">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
+            <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 19h14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="native-edit" id="edit">Edit</div>
+        <div class="native-share" id="share">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 15V4m0 0 4 4m-4-4L8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
+    </div>
+    <div class="cgqid-bulk-bar" id="bulk">
+      <span class="cgqid-bulk-count">1 selected</span>
+      <button class="cgqid-bulk-download" type="button">Download selected</button>
+      <button class="cgqid-bulk-clear" type="button">Clear</button>
     </div>
     <pre id="result"></pre>
     <script>
+      document.documentElement.dataset.cgqidBulkActive = "true";
+      document.querySelector("#tile").dataset.cgqidSelected = "true";
+      const downloadAll = document.querySelector("#downloadAll").getBoundingClientRect();
       const download = document.querySelector("#download").getBoundingClientRect();
+      const select = document.querySelector("#select").getBoundingClientRect();
       const edit = document.querySelector("#edit").getBoundingClientRect();
       const share = document.querySelector("#share").getBoundingClientRect();
+      const bulk = document.querySelector("#bulk").getBoundingClientRect();
       const overlaps = (a, b) => !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
-      const ok = !overlaps(download, edit) && !overlaps(download, share) && download.top < edit.top && download.top < share.top;
+      const ok =
+        downloadAll.width > 90 &&
+        downloadAll.height >= 30 &&
+        downloadAll.bottom < select.top &&
+        !overlaps(bulk, downloadAll) &&
+        !overlaps(download, edit) &&
+        !overlaps(download, share) &&
+        !overlaps(select, download) &&
+        !overlaps(select, edit) &&
+        !overlaps(select, share) &&
+        !overlaps(bulk, edit) &&
+        !overlaps(bulk, share) &&
+        download.top < edit.top &&
+        select.top < edit.top &&
+        download.top < share.top;
       document.querySelector("#result").textContent = JSON.stringify({
         ok,
+        downloadAll: { top: downloadAll.top, right: downloadAll.right, bottom: downloadAll.bottom, left: downloadAll.left },
         download: { top: download.top, right: download.right, bottom: download.bottom, left: download.left },
+        select: { top: select.top, right: select.right, bottom: select.bottom, left: select.left },
         edit: { top: edit.top, right: edit.right, bottom: edit.bottom, left: edit.left },
-        share: { top: share.top, right: share.right, bottom: share.bottom, left: share.left }
+        share: { top: share.top, right: share.right, bottom: share.bottom, left: share.left },
+        bulk: { top: bulk.top, right: bulk.right, bottom: bulk.bottom, left: bulk.left }
       });
     </script>
   </body>

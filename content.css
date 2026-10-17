@@ -32,6 +32,37 @@
   z-index: 2147483000;
 }
 
+.cgqid-select {
+  align-items: center;
+  appearance: none;
+  background: rgba(8, 10, 14, 0.28);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.96);
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  left: 12px;
+  opacity: 0.34;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  top: 12px;
+  transform: translateY(-2px) scale(0.96);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+  width: 28px;
+  z-index: 2147483000;
+}
+
 .cgqid-button:hover,
 .cgqid-button:focus-visible,
 .cgqid-host:hover > .cgqid-button,
@@ -43,13 +74,66 @@
   transform: translateY(0) scale(1);
 }
 
+.cgqid-select:hover,
+.cgqid-select:focus-visible,
+.cgqid-host:hover > .cgqid-select,
+.cgqid-host:focus-within > .cgqid-select,
+.cgqid-host[data-cgqid-selected="true"] > .cgqid-select {
+  background: rgba(8, 10, 14, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  outline: none;
+  transform: translateY(0) scale(1);
+}
+
 .cgqid-button:focus-visible {
   border-color: rgba(255, 255, 255, 0.7);
+}
+
+.cgqid-select:focus-visible {
+  border-color: rgba(255, 255, 255, 0.78);
 }
 
 .cgqid-button svg {
   height: 15px;
   width: 15px;
+}
+
+.cgqid-select-box {
+  border: 1.8px solid currentColor;
+  border-radius: 5px;
+  height: 14px;
+  position: relative;
+  width: 14px;
+}
+
+.cgqid-select-box::after {
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  content: "";
+  height: 8px;
+  left: 4px;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transform: rotate(45deg) scale(0.8);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+  width: 4px;
+}
+
+.cgqid-select[aria-checked="true"] {
+  background: rgba(16, 185, 129, 0.92);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: white;
+  opacity: 1;
+}
+
+.cgqid-select[aria-checked="true"] .cgqid-select-box::after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
 }
 
 .cgqid-button.cgqid-busy {
@@ -88,6 +172,119 @@
   transform: translate(-50%, 0);
 }
 
+.cgqid-bulk-bar {
+  align-items: center;
+  background: rgba(10, 12, 16, 0.88);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.32);
+  color: white;
+  display: flex;
+  font: 650 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  gap: 8px;
+  left: 50%;
+  max-width: calc(100vw - 32px);
+  padding: 7px;
+  position: fixed;
+  top: 22px;
+  transform: translateX(-50%);
+  z-index: 2147483001;
+}
+
+.cgqid-bulk-bar[hidden] {
+  display: none !important;
+}
+
+.cgqid-bulk-count {
+  padding: 0 8px 0 10px;
+  white-space: nowrap;
+}
+
+.cgqid-bulk-bar button {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 30px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.cgqid-bulk-download {
+  background: #f7fafc;
+  color: #081018;
+}
+
+.cgqid-bulk-download:hover,
+.cgqid-bulk-download:focus-visible {
+  background: white;
+  outline: none;
+}
+
+.cgqid-bulk-clear {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.cgqid-bulk-clear:hover,
+.cgqid-bulk-clear:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  outline: none;
+}
+
+.cgqid-bulk-bar button:disabled,
+.cgqid-bulk-bar button.cgqid-busy {
+  cursor: progress;
+  opacity: 0.62;
+}
+
+.cgqid-library-download-all {
+  align-items: center;
+  appearance: none;
+  background: #10a37f;
+  border: 0;
+  border-radius: 9px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font: 750 14px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  gap: 7px;
+  height: 36px;
+  justify-content: center;
+  margin-inline-start: 12px;
+  padding: 0 13px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cgqid-library-download-all:hover,
+.cgqid-library-download-all:focus-visible {
+  background: #0f8f70;
+  outline: none;
+}
+
+.cgqid-library-download-all:focus-visible {
+  box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.28);
+}
+
+.cgqid-library-download-all:disabled,
+.cgqid-library-download-all.cgqid-busy {
+  cursor: progress;
+  opacity: 0.68;
+}
+
+.cgqid-library-download-all svg {
+  height: 15px;
+  width: 15px;
+}
+
+.cgqid-library-download-all.cgqid-busy svg {
+  animation: cgqid-pulse 760ms ease-in-out infinite alternate;
+}
+
 @keyframes cgqid-pulse {
   from {
     transform: translateY(0);
@@ -99,7 +296,29 @@
 }
 
 @media (hover: none) {
-  .cgqid-button {
+  .cgqid-button,
+  .cgqid-select {
     opacity: 0.72;
+  }
+}
+
+@media (max-width: 420px) {
+  .cgqid-bulk-bar {
+    border-radius: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .cgqid-bulk-count {
+    text-align: center;
+    width: 100%;
+  }
+
+  .cgqid-library-download-all {
+    font-size: 13px;
+    height: 34px;
+    margin-block-start: 8px;
+    margin-inline-start: 0;
   }
 }

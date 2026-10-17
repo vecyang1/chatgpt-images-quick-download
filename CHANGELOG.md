@@ -1,5 +1,31 @@
 # Changelog
 
+## [2026-09-12] - 2026-09-12
+
+### Fixes
+- Make test download paths portable and update gitignore (`1892389`)
+
+### Documentation
+- Add release playbook handoff (`0b3a952`)
+
+## 0.6.1 - 2026-06-22
+
+- Fixed `Download all` so it no longer falls back to direct gallery image URLs that can save thumbnails or `.webp` preview assets.
+- Limited batch flows to ChatGPT's native full-size viewer `Save` path and skipped tiles without a verified full-size control.
+- Tightened native-open matching so one image tile cannot accidentally reuse a neighboring tile's open button.
+
+## 0.6.0 - 2026-06-22
+
+- Added a `Download all` button beside the ChatGPT Images `My images` heading.
+- Made `Download all` auto-scroll the gallery to discover lazy-loaded image tiles before downloading.
+- Added session-aware deduplication so repeated or already downloaded image targets are skipped by the all-images flow.
+
+## 0.5.0 - 2026-06-22
+
+- Added per-image batch-select checkboxes and a `Download selected` toolbar for downloading multiple chosen ChatGPT images at once.
+- Kept batch downloads on the same native full-size Save path used by the single-image overlay button, with URL fallback behavior unchanged.
+- Added E2E smoke coverage for selection controls, selected-count UI, and multi-image native Save triggering.
+
 ## 0.4.1 - 2026-05-09
 
 - Kept the release source and CI harness aligned by running the Chrome CDP smoke test with Node's experimental WebSocket flag for Node 20 compatibility.

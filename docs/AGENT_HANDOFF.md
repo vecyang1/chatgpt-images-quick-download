@@ -68,3 +68,4 @@ The Codex Chrome automation policy blocks operating `chrome://extensions`, so do
 - Keep background downloads restricted to allowlisted ChatGPT/OpenAI image surfaces and generated safe filenames.
 - Treat present non-image MIME types, especially `text/html`, as download failures even if the filename extension looks like an image.
 - Scope native `Save` and `Close` clicks to the fullscreen/dialog viewer root.
+- Keep all-gallery downloads on the existing content-script path: scroll the ChatGPT Images page to discover lazy-loaded tiles, require the native full-size viewer `Save` path, deduplicate by stable image key, and avoid new page-data collection or broader permissions.
