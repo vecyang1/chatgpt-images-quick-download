@@ -3,7 +3,7 @@
   "name": "ChatGPT Images Quick Download",
   "short_name": "CG Image DL",
   "version": "0.6.1",
-  "description": "Adds small transparent download, selection, and Download all controls on ChatGPT generated images so one or many images can be saved quickly.",
+  "description": "Quickly download full-size ChatGPT generated images with 1-click download, batch selection, and bulk library download controls.",
   "minimum_chrome_version": "102",
   "permissions": ["activeTab", "downloads"],
   "background": {

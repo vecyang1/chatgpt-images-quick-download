@@ -10,6 +10,7 @@ const changelog = fs.readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
 
 assert.equal(manifest.manifest_version, 3, "manifest_version must be 3");
 assert.equal(manifest.version, packageJson.version, "manifest and package versions must match");
+assert(manifest.description && manifest.description.length <= 132, `manifest description must not exceed 132 characters (currently ${manifest.description?.length})`);
 assert(changelog.includes(`## ${manifest.version} - `), "CHANGELOG.md must contain an entry for the current version");
 assert.equal(manifest.background.service_worker, "background.js", "background service worker is missing");
 assert(manifest.permissions.includes("downloads"), "downloads permission is required");

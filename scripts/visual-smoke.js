@@ -184,27 +184,54 @@ function runVisualSmoke({ updateScreenshot = false } = {}) {
   fs.writeFileSync(htmlPath, buildVisualSmokeHtml(css));
 
   const fileUrl = `file://${htmlPath}`;
-  const dump = execFileSync(chrome, ["--headless=new", "--disable-gpu", "--dump-dom", fileUrl], {
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"]
-  });
+  const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), "cgqid-chrome-smoke-profile-"));
+  const commonFlags = [
+    "--headless=new",
+    "--disable-gpu",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--disable-background-networking",
+    "--disable-sync",
+    "--disable-default-apps",
+    "--disable-extensions",
+    "--disable-component-update",
+    "--mute-audio",
+    `--user-data-dir=${profileDir}`
+  ];
 
-  const resultText = dump.match(/<pre id="result">([^<]+)<\/pre>/)?.[1];
-  assert(resultText, "Visual smoke page did not report layout metrics.");
-  const result = JSON.parse(resultText.replaceAll("&quot;", "\""));
-  assert.equal(result.ok, true, `Download button overlaps native controls: ${JSON.stringify(result)}`);
+  try {
+    const dump = execFileSync(
+      chrome,
+      [
+        ...commonFlags,
+        "--dump-dom",
+        fileUrl
+      ],
+      {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+        timeout: 15000
+      }
+    );
 
-  execFileSync(
-    chrome,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--window-size=720,620",
-      `--screenshot=${screenshotPath}`,
-      fileUrl
-    ],
-    { stdio: "ignore" }
-  );
+    const resultText = dump.match(/<pre id="result">([^<]+)<\/pre>/)?.[1];
+    assert(resultText, "Visual smoke page did not report layout metrics.");
+    const result = JSON.parse(resultText.replaceAll("&quot;", "\""));
+    assert.equal(result.ok, true, `Download button overlaps native controls: ${JSON.stringify(result)}`);
+
+    execFileSync(
+      chrome,
+      [
+        ...commonFlags,
+        "--window-size=720,620",
+        `--screenshot=${screenshotPath}`,
+        fileUrl
+      ],
+      { stdio: "ignore", timeout: 15000 }
+    );
+  } finally {
+    fs.rmSync(profileDir, { recursive: true, force: true });
+  }
 
   return screenshotPath;
 }
