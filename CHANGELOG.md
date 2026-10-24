@@ -1,10 +1,15 @@
 # Changelog
 
+## [2026-10-22] - 2026-10-22
+
+### Documentation
+- Record Chrome Web Store publishing pipeline and invariants in handoff (`ebb9523`)
+
 ## [2026-10-19] - 2026-10-19
 
 ### Published
 - Submitted v0.6.1 to Chrome Web Store for review (Item ID `koloagmleifopacalpjkpmbcgapkgblh`, Publisher `a192d1b2-927d-4d30-929f-f85f73992e56`).
-- Added official Chrome Web Store assets suite (128px icon, 4 promotional screenshots, 440x280 small promo tile, 1400x560 marquee promo tile) and [PRIVACY.md](file:///Users/vecsatfoxmailcom/Documents/A-coding/26.05.09%20chatgpt-images-downloader-extension/docs/PRIVACY.md).
+- Added official Chrome Web Store assets suite (128px icon, 4 promotional screenshots, 440x280 small promo tile, 1400x560 marquee promo tile) and [PRIVACY.md](docs/PRIVACY.md).
 - Shortened manifest description to 127 characters to satisfy CWS 132-character limit and added regression assertion in `scripts/validate-extension.js`.
 - Hardened `scripts/visual-smoke.js` with isolated temporary browser profile directory and headless stability flags.
 

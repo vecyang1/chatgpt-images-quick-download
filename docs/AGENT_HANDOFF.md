@@ -91,6 +91,6 @@ When releasing a new version to the Chrome Web Store:
    - **Item ID:** `koloagmleifopacalpjkpmbcgapkgblh`
    - **Console URL:** `https://chrome.google.com/webstore/devconsole/a192d1b2-927d-4d30-929f-f85f73992e56`
    - **1Password Reference:** `icwj75zkxeite36wzvmma74jri` in `Agent Automation` vault.
-   - **Memory Vault Link:** `tools/chrome_web_store_publisher.md` in 2nd Brain Memory Center.
+   - **Memory Vault Link:** `tools/chrome_web_store_publisher.md` in tool memory hub.
 5. **Reviewer Test Instructions (testcredentials):**
    - Test instructions are saved under the console's `testcredentials` route explaining how to test using free ChatGPT accounts.

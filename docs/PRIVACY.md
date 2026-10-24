@@ -22,4 +22,4 @@ The extension does not integrate with any third-party advertising or analytics s
 ## 5. Contact & Source Code
 ChatGPT Images Quick Download is open-source under the MIT license.
 - GitHub: [https://github.com/vecyang1/chatgpt-images-quick-download](https://github.com/vecyang1/chatgpt-images-quick-download)
-- Developer Contact: yanghxmail@gmail.com
+- Developer Contact: developer@example.com
